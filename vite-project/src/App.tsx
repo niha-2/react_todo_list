@@ -1,13 +1,15 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import './App.css'
 import { InputTodo } from './components/InputTodo'
 import { Todo } from './components/types/Todo';
 import { TodoItem } from './components/TodoItem';
 import { TodoState } from './components/TodoState';
+import { TodoContext } from './providers/TodoProvider';
 
 function App() {
   const [todoText, setTodoText] = useState('');
-  const [todos, setTodos] = useState<Array<Todo>>([]);
+
+  const {todos, setTodos} = useContext(TodoContext);
 
   const onChangeTodoText = (event: ChangeEvent<HTMLInputElement>): void => setTodoText(event.target.value);
 
@@ -23,12 +25,7 @@ function App() {
     setTodoText('');
   }
 
-  const onChangeCompleted = (id: number): void => {
-    const newTodos = todos.map((todo) =>
-      todo.id !== id ? todo : {...todo, completed: !todo.completed}
-    )
-    setTodos(newTodos);
-  }
+
 
   return (
     <>
@@ -36,7 +33,7 @@ function App() {
       <div>
         <ul>
         {todos.map((todo: Todo) =>
-          <TodoItem key={todo.id} completed={todo.completed} todoTitle={todo.title} onChangeCompleted={() => onChangeCompleted(todo.id)} />
+          <TodoItem key={todo.id} todo={todo} />
         )}
         </ul>
       </div>
