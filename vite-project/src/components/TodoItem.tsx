@@ -35,10 +35,10 @@ export const TodoItem: FC<Props> = (props) => {
     setIsEditing(!isEditing);
   }
 
-  const onClickDelete = (): void => {
+  const onClickDelete = (id: number): void => {
     if(window.confirm('本当によろしいですか？')) {
       const deletedTodos = todos.filter((td) =>
-        td.id !== todo.id
+        td.id !== id
       )
       setTodos(deletedTodos);
     }
@@ -56,7 +56,7 @@ export const TodoItem: FC<Props> = (props) => {
         <>
           {todo.completed ? (<s>{todo.title}</s>) : (<span>{todo.title}</span>)}
           <button onClick={onClickEdit}>編集</button>
-          <button onClick={onClickDelete}>削除</button>
+          <button onClick={() => onClickDelete(todo.id)}>削除</button>
         </>
       )}
     </li>
