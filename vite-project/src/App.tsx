@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from 'react'
+import { ChangeEvent, useContext, useRef, useState } from 'react'
 import './App.css'
 import { InputTodo } from './components/InputTodo'
 import { Todo } from './components/types/Todo';
@@ -10,22 +10,22 @@ function App() {
   const [todoText, setTodoText] = useState('');
 
   const {todos, setTodos} = useContext(TodoContext);
+  const nextId = useRef(1);
 
   const onChangeTodoText = (event: ChangeEvent<HTMLInputElement>): void => setTodoText(event.target.value);
 
   const onClickAdd = (): void => {
     if (todoText === '') return;
     const newTodo: Todo = {
-      id: todos.length + 1,
+      id: nextId.current,
       title: todoText,
       completed: false
     };
     const newTodos = [...todos, newTodo];
     setTodos(newTodos);
     setTodoText('');
+    nextId.current ++;
   }
-
-
 
   return (
     <>
